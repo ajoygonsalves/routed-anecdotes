@@ -6,9 +6,9 @@ import { Form } from "react-router-dom";
 import { useField } from "../hooks";
 
 const CreateNew = () => {
-  const content = useField("text", "content");
-  const author = useField("text", "author");
-  const info = useField("text", "info");
+  const { reset: resetContent, ...content } = useField("text", "content");
+  const { reset: resetAuthor, ...author } = useField("text", "author");
+  const { reset: resetInfo, ...info } = useField("text", "info");
 
   const navigate = useNavigate();
 
@@ -21,6 +21,12 @@ const CreateNew = () => {
     };
     createAnecdote(submission);
     navigate("/", { state: submission });
+  };
+
+  const handleReset = () => {
+    resetContent();
+    resetAuthor();
+    resetInfo();
   };
 
   return (
@@ -40,6 +46,7 @@ const CreateNew = () => {
           <input {...info} />
         </div>
         <button>create</button>
+        <input type="reset" onClick={handleReset} />
       </Form>
     </div>
   );
