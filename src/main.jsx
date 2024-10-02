@@ -2,12 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import ErrorPage from "./error-page";
-import AnecdoteList from "./components/AnecdoteList";
-import CreateNew from "./components/CreateNew";
 import About from "./components/About";
 import Anecdote from "./components/Anecdote";
+import CreateNew from "./components/CreateNew";
 import { anecdotesLoader } from "./components/loaders/loader";
+import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
   {

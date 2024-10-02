@@ -1,30 +1,25 @@
 import { useState } from "react";
 import { createAnecdote } from "./services/anecdotes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigation, useFetcher } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
+import { Form } from "react-router-dom";
 
 const CreateNew = () => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
   const navigate = useNavigate();
-  const { setAnecdotes } = useOutletContext();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const newAnecdote = { content, author, info };
-    await createAnecdote(newAnecdote);
-    setAnecdotes((prevAnecdotes) => [...prevAnecdotes, createdAnecdote]);
-    setContent("");
-    setAuthor("");
-    setInfo("");
-    navigate("/");
+    createAnecdote({ content, author, info });
+    navigate("/", { state: { content, author, info } });
   };
 
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <Form method="post" id="anecdote-form" onSubmit={handleSubmit}>
         <div>
           content
           <input
@@ -50,7 +45,7 @@ const CreateNew = () => {
           />
         </div>
         <button>create</button>
-      </form>
+      </Form>
     </div>
   );
 };
