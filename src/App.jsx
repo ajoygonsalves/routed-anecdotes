@@ -1,27 +1,32 @@
-import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Outlet } from "react-router-dom";
-import Menu from "./components/Menu";
-import Footer from "./components/Footer";
+import { useEffect, useState } from "react";
+import {
+  Outlet,
+  Route,
+  Routes,
+  useLoaderData,
+  useLocation,
+} from "react-router-dom";
 import AnecdoteList from "./components/AnecdoteList";
-import CreateNew from "./components/CreateNew";
-import { useLoaderData, useActionData, useLocation } from "react-router-dom";
+import Footer from "./components/Footer";
+import Menu from "./components/Menu";
+import { useNavigation, useNavigate } from "react-router-dom";
 
 const App = () => {
   const [notification, setNotification] = useState("");
-  const actionData = useActionData();
   const location = useLocation();
   const anecdotes = useLoaderData();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state) {
+    if (location.state && location.state.content) {
       setNotification(`${location.state.content} anecdote created`);
       const timer = setTimeout(() => {
         setNotification("");
-      }, 5000);
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [location]);
+  }, [location, navigate]);
 
   const vote = (id) => {
     const anecdote = anecdoteById(id);

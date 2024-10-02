@@ -3,17 +3,24 @@ import { createAnecdote } from "./services/anecdotes";
 import { useNavigate, useNavigation, useFetcher } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import { Form } from "react-router-dom";
+import { useField } from "../hooks";
 
 const CreateNew = () => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content = useField("text", "content");
+  const author = useField("text", "author");
+  const info = useField("text", "info");
+
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createAnecdote({ content, author, info });
-    navigate("/", { state: { content, author, info } });
+    const submission = {
+      content: content.value,
+      author: author.value,
+      info: info.value,
+    };
+    createAnecdote(submission);
+    navigate("/", { state: submission });
   };
 
   return (
@@ -22,27 +29,15 @@ const CreateNew = () => {
       <Form method="post" id="anecdote-form" onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
       </Form>
